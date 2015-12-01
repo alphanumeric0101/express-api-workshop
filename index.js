@@ -17,16 +17,17 @@ app.use(function(request, response, next){
     next();
 });
 
-// app.get('/query', function(req, res) {
-//     connection.query("SELECT * from Account", function(err, result) {
-//         if (err) {
-//             console.log('error!');
-//         }
-//         else {
-//             console.log(result);
-//         }
-//     });
-// });
+app.get('/AddressBooks', function(req, res) {
+    connection.query("SELECT * from AddressBook WHERE accountId=1", function(err, result) {
+        if (err) {
+            console.log('error!');
+        }
+        else {
+            console.log(result);
+            res.send(result);
+        }
+    });
+});
 
 // app.get('/query', function(req, res) {
 //     connection.query("SELECT * from Account", function(err, result) {
