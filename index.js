@@ -83,6 +83,33 @@ app.delete('/AddressBooks/:id', function(req, res) {
     });
 });
 
+///////////////////////////////////////////////////
+////////////////Modify ENTRY///////////////////////
+/////////                               ///////////
+
+app.put('/AddressBooks/:id', function(req, res) {
+    if (req.accountId) {
+        connection.query("UPDATE AddressBook SET name='" + req.body.name + "' WHERE AddressBook.id=" + req.params.id + " AND AddressBook.accountId=" + req.accountId, function(err, result) {
+            if (err) {
+                console.log(err);
+                res.send('Bad query, are you authorized to edit that book?');
+            }
+            else {
+                connection.query("SELECT * FROM AddressBook WHERE AddressBook.id=" + req.params.id, function(err, result) {
+                    if (err) {
+                        console.log(err);
+                        res.send('error!');
+                    }
+                    res.send(result);
+                });
+            }
+        });
+    }
+    else {
+        res.status(403).send("You are not authorized to modify books on that account");
+    }
+});
+
 var server = app.listen(process.env.PORT, process.env.IP, function() {
     var host = server.address().address;
     var port = server.address().port;
