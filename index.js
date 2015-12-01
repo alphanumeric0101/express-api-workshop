@@ -17,10 +17,13 @@ app.use(function(request, response, next){
     next();
 });
 
-app.get('/AddressBooks', function(req, res) {
-    connection.query("SELECT * from AddressBook WHERE accountId=1", function(err, result) {
+app.get('/AddressBooks/:id', function(req, res) {
+    connection.query("SELECT * from AddressBook WHERE id=" + req.params.id, function(err, result) {
         if (err) {
             console.log('error!');
+        }
+        else if (result.accountId !== req.accountId) {
+            res.status(404).send("You don't have access to that account");
         }
         else {
             console.log(result);
